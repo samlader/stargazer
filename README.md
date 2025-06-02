@@ -5,7 +5,7 @@
 
 Follow what other people are starring without stalking their GitHub profiles by subscribing to an RSS feed. ⭐
 
-You can access a hosted version of this (for free) [here](https://stargazer.lader.io/feeds/samlader).
+You can use a hosted version of this (for free) [here](https://stargazer.lader.io/feeds/samlader).
 
 ## Usage
 
