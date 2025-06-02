@@ -14,19 +14,18 @@ GET /feed/{username} # Get RSS feed for a single user
 GET /feeds/{user1+user2+...} # Get combined RSS feed for multiple users
 ```
 
-### Quick Start:
-
-```bash
-make deps
-make run
-```
-
-### Configuration
+### Quick Start
 
 Set your GitHub token:
 
 ```bash
 export GITHUB_TOKEN=your_token_here
+```
+
+Install dependencies and run:
+```bash
+make deps
+make run
 ```
 
 ### Development
