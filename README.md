@@ -3,7 +3,7 @@
 [![Build Status](https://github.com/samlader/stargazer/actions/workflows/ci.yml/badge.svg)](https://github.com/samlader/stargazer/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-Follow what other people are starring without stalking their GitHub profiles by subscribing to an RSS feed. ⭐
+Subscribe to an RSS feed to follow what other people are starring, without stalking their GitHub profiles. ⭐
 
 You can use a hosted version of this (for free) [here](https://stargazer.lader.io/feeds/samlader+healeycodes).
 
