@@ -18,7 +18,7 @@ test:
 
 run:
 	@echo "Running..."
-	@$(GO) run .
+	@$(GO) run main.go
 
 fmt:
 	@echo "Formatting code..."

@@ -35,11 +35,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	router.ServeHTTP(w, r)
 }
 
-func HandleRSSFeed(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	username := vars["username"]
-
-	feedData, err := feed.GenerateRSSFeed(username, FeedCache)
+func sendFeedResponse(w http.ResponseWriter, feedData interface{}, err error) {
 	if err != nil {
 		if err.Error() == "GITHUB_TOKEN environment variable is not set" {
 			http.Error(w, "Server configuration error: GitHub token not set", http.StatusServiceUnavailable)
@@ -56,6 +52,14 @@ func HandleRSSFeed(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func HandleRSSFeed(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	username := vars["username"]
+
+	feedData, err := feed.GenerateRSSFeed(username, FeedCache)
+	sendFeedResponse(w, feedData, err)
+}
+
 func HandleMultiUserRSSFeed(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	usernames := vars["usernames"]
@@ -65,18 +69,5 @@ func HandleMultiUserRSSFeed(w http.ResponseWriter, r *http.Request) {
 	}
 
 	feedData, err := feed.GenerateMultiUserRSSFeed(strings.Split(usernames, "+"), FeedCache)
-	if err != nil {
-		if err.Error() == "GITHUB_TOKEN environment variable is not set" {
-			http.Error(w, "Server configuration error: GitHub token not set", http.StatusServiceUnavailable)
-			return
-		}
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/xml")
-	if err := xml.NewEncoder(w).Encode(feedData); err != nil {
-		http.Error(w, "Failed to encode feed", http.StatusInternalServerError)
-		return
-	}
+	sendFeedResponse(w, feedData, err)
 }
