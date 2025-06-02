@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"reflect"
+	"strings"
 	"testing"
 	"time"
 	"unsafe"
@@ -141,6 +142,11 @@ func TestHandleMultiUserRSSFeed(t *testing.T) {
 		{
 			name:       "Empty usernames",
 			usernames:  "",
+			wantStatus: http.StatusBadRequest,
+		},
+		{
+			name:       "Too many usernames",
+			usernames:  strings.Repeat("user+", MaxUsernames) + "user",
 			wantStatus: http.StatusBadRequest,
 		},
 	}

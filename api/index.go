@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/xml"
+	"fmt"
 	"log"
 	"net/http"
 	"strings"
@@ -14,8 +15,9 @@ import (
 )
 
 var (
-	router    *mux.Router
-	FeedCache = cache.NewFeedCache()
+	router       *mux.Router
+	FeedCache    = cache.NewFeedCache()
+	MaxUsernames = 100
 )
 
 func init() {
@@ -69,7 +71,13 @@ func HandleMultiUserRSSFeed(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	feedData, err := feed.GenerateMultiUserRSSFeed(strings.Split(usernames, "+"), FeedCache)
+	usernameList := strings.Split(usernames, "+")
+	if len(usernameList) > MaxUsernames {
+		http.Error(w, fmt.Sprintf("Too many usernames. Maximum allowed is %d", MaxUsernames), http.StatusBadRequest)
+		return
+	}
+
+	feedData, err := feed.GenerateMultiUserRSSFeed(usernameList, FeedCache)
 	sendFeedResponse(w, feedData, err)
 }
 
