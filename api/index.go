@@ -29,6 +29,7 @@ func init() {
 	router.HandleFunc("/feeds/", func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "No usernames provided", http.StatusBadRequest)
 	}).Methods("GET")
+	router.HandleFunc("/", HandleRoot).Methods("GET")
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
@@ -70,4 +71,29 @@ func HandleMultiUserRSSFeed(w http.ResponseWriter, r *http.Request) {
 
 	feedData, err := feed.GenerateMultiUserRSSFeed(strings.Split(usernames, "+"), FeedCache)
 	sendFeedResponse(w, feedData, err)
+}
+
+func HandleRoot(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`
+	{
+	  "description": "Stargazer API: Follow what other people are starring on GitHub without stalking their profiles.",
+	  "schema": {
+	    "/feed/{username}": {
+	      "method": "GET",
+	      "description": "Get the RSS feed for a single GitHub user.",
+	      "params": {
+	        "username": "string (GitHub username)"
+	      }
+	    },
+	    "/feeds/{usernames}": {
+	      "method": "GET",
+	      "description": "Get the RSS feed for multiple GitHub users (separate usernames with '+').",
+	      "params": {
+	        "usernames": "string (e.g. user1+user2+user3)"
+	      }
+	    }
+	  }
+	}`))
 }
