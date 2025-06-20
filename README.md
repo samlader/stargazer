@@ -10,8 +10,8 @@ You can use a hosted version of this (for free) [here](https://stargazer.lader.i
 ## Usage
 
 ```
-GET /feed/{username} # Get RSS feed for a single user
-GET /feeds/{user1+user2+...} # Get combined RSS feed for multiple users
+GET /feed/{username} # Single user
+GET /feeds/{user1}+{user2}+...} # Multiple users
 ```
 
 ### Quick Start
